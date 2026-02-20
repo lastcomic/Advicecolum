@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Second Opinion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <p class="overline">An Advice Column for the Second Half</p>
+            <h1>The Second Opinion</h1>
+            <p class="tagline">Sharp takes on midlife from someone who's been paying attention</p>
+        </header>
+
+        <section class="question-section">
+            <label for="question">Dear Second Opinion,</label>
+            <textarea
+                id="question"
+                placeholder="What's on your mind? Career crossroads, relationship questions, aging parents, grown kids who won't call back, existential dread disguised as a home renovation project&hellip;"
+                maxlength="2000"
+            ></textarea>
+            <div class="submit-row">
+                <span class="char-count"><span id="charCount">0</span> / 2,000</span>
+                <button class="submit-btn" id="submitBtn" onclick="submitQuestion()">Ask Away</button>
+            </div>
+        </section>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="loading" id="loading">
+            <p class="loading-text">The columnist is reading your letter<span class="loading-dots"></span></p>
+        </div>
+
+        <section class="response-section" id="responseSection">
+            <p class="response-header">The Second Opinion</p>
+            <div class="response-body" id="responseBody"></div>
+        </section>
+
+        <footer>
+            <p>
+                This column is powered by AI and intended for entertainment and reflection.
+                <br>It is not a substitute for professional advice from a therapist, doctor, lawyer, or financial advisor.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const textarea = document.getElementById("question");
+        const charCount = document.getElementById("charCount");
+        const submitBtn = document.getElementById("submitBtn");
+        const loading = document.getElementById("loading");
+        const errorMessage = document.getElementById("errorMessage");
+        const responseSection = document.getElementById("responseSection");
+        const responseBody = document.getElementById("responseBody");
+
+        textarea.addEventListener("input", () => {
+            charCount.textContent = textarea.value.length;
+        });
+
+        textarea.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                submitQuestion();
+            }
+        });
+
+        async function submitQuestion() {
+            const question = textarea.value.trim();
+            if (!question) return;
+
+            submitBtn.disabled = true;
+            loading.classList.add("visible");
+            errorMessage.classList.remove("visible");
+            responseSection.classList.remove("visible");
+            responseBody.innerHTML = "";
+
+            try {
+                const res = await fetch("/ask/stream", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ question }),
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error || "Something went wrong.");
+                }
+
+                loading.classList.remove("visible");
+                responseSection.classList.add("visible");
+
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = "";
+                let fullText = "";
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split("\n");
+                    buffer = lines.pop();
+
+                    for (const line of lines) {
+                        if (line.startsWith("data: ")) {
+                            const data = line.slice(6);
+                            if (data === "[DONE]") break;
+                            if (data.startsWith("[ERROR]")) {
+                                throw new Error(data.slice(8));
+                            }
+                            fullText += data;
+                            responseBody.innerHTML = formatText(fullText);
+                        }
+                    }
+                }
+            } catch (err) {
+                loading.classList.remove("visible");
+                errorMessage.textContent = err.message;
+                errorMessage.classList.add("visible");
+            } finally {
+                submitBtn.disabled = false;
+            }
+        }
+
+        function formatText(text) {
+            return text
+                .split(/\n\n+/)
+                .filter(p => p.trim())
+                .map(p => "<p>" + escapeHtml(p.trim()) + "</p>")
+                .join("");
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
