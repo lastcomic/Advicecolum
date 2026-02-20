@@ -4,139 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Second Opinion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Special+Elite&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <p class="overline">An Advice Column for the Second Half</p>
-            <h1>The Second Opinion</h1>
-            <p class="tagline">Sharp takes on midlife from someone who's been paying attention</p>
-        </header>
+    <!-- Sound toggle -->
+    <button class="sound-toggle" id="soundToggle" title="Toggle typewriter sounds">
+        <span class="sound-on">&#9834; Sound On</span>
+        <span class="sound-off" style="display:none;">&#9834; Sound Off</span>
+    </button>
 
-        <section class="question-section">
-            <label for="question">Dear Second Opinion,</label>
-            <textarea
-                id="question"
-                placeholder="What's on your mind? Career crossroads, relationship questions, aging parents, grown kids who won't call back, existential dread disguised as a home renovation project&hellip;"
-                maxlength="2000"
-            ></textarea>
-            <div class="submit-row">
-                <span class="char-count"><span id="charCount">0</span> / 2,000</span>
-                <button class="submit-btn" id="submitBtn" onclick="submitQuestion()">Ask Away</button>
+    <div class="page-wrapper">
+        <div class="newspaper">
+            <!-- Top bar -->
+            <div class="top-bar">
+                <span>Est. 2025</span>
+                <span>Vol. I &middot; No. 1</span>
+                <span>Price: Free Advice</span>
             </div>
-        </section>
 
-        <div class="error-message" id="errorMessage"></div>
+            <!-- Masthead -->
+            <header class="masthead">
+                <h1 class="masthead-title">The Second Opinion</h1>
+                <p class="masthead-subtitle">Humor &amp; Heart for the Second Half</p>
+            </header>
 
-        <div class="loading" id="loading">
-            <p class="loading-text">The columnist is reading your letter<span class="loading-dots"></span></p>
+            <!-- Input state -->
+            <section class="input-section" id="inputSection">
+                <div class="section-rule"></div>
+                <p class="section-label">Write to the Columnist</p>
+
+                <form id="letterForm" onsubmit="return false;">
+                    <div class="field-row">
+                        <div class="field-group">
+                            <label for="nameField">Your First Name</label>
+                            <input type="text" id="nameField" class="typewriter-input" placeholder="e.g. Ralph" maxlength="50" required>
+                        </div>
+                        <div class="field-group">
+                            <label for="locationField">Your Location</label>
+                            <input type="text" id="locationField" class="typewriter-input" placeholder="e.g. Ohio" maxlength="100" required>
+                        </div>
+                    </div>
+
+                    <label for="questionField">Your Question</label>
+                    <textarea id="questionField" class="typewriter-textarea" placeholder="What's weighing on you? A career crossroads, a relationship question, aging parents, grown kids who won't call back, existential dread disguised as a home renovation project..." maxlength="2000" required></textarea>
+                    <div class="textarea-footer">
+                        <span class="char-count"><span id="charCount">0</span> / 2,000</span>
+                    </div>
+
+                    <button type="submit" class="send-btn" id="sendBtn">Send It In</button>
+                </form>
+            </section>
+
+            <!-- Loading state -->
+            <section class="loading-section" id="loadingSection">
+                <div class="section-rule"></div>
+                <p class="loading-text">Our columnist is investigating<span class="loading-dots"></span></p>
+            </section>
+
+            <!-- Response state -->
+            <section class="response-section" id="responseSection">
+                <div class="section-rule"></div>
+                <p class="column-label">The Second Opinion &middot; Feature</p>
+                <p class="byline" id="byline"></p>
+                <div class="article-body" id="articleBody"></div>
+                <div class="cursor" id="cursor"></div>
+
+                <!-- Audio section -->
+                <div class="audio-section" id="audioSection">
+                    <div class="audio-rule"></div>
+                    <p class="audio-label">Hear the column read aloud</p>
+                    <button class="audio-btn" id="audioBtn">&#9654; Read It To Me</button>
+                </div>
+
+                <!-- Write another -->
+                <button class="another-btn" id="anotherBtn">&#9998; Write Another Letter</button>
+            </section>
+
+            <!-- Error state -->
+            <div class="error-message" id="errorMessage"></div>
+
+            <!-- Footer -->
+            <footer class="newspaper-footer">
+                <div class="section-rule"></div>
+                <p>A Second Draft Society Publication</p>
+                <p class="disclaimer">This column is powered by AI and intended for entertainment and reflection. It is not a substitute for professional advice.</p>
+            </footer>
         </div>
-
-        <section class="response-section" id="responseSection">
-            <p class="response-header">The Second Opinion</p>
-            <div class="response-body" id="responseBody"></div>
-        </section>
-
-        <footer>
-            <p>
-                This column is powered by AI and intended for entertainment and reflection.
-                <br>It is not a substitute for professional advice from a therapist, doctor, lawyer, or financial advisor.
-            </p>
-        </footer>
     </div>
 
-    <script>
-        const textarea = document.getElementById("question");
-        const charCount = document.getElementById("charCount");
-        const submitBtn = document.getElementById("submitBtn");
-        const loading = document.getElementById("loading");
-        const errorMessage = document.getElementById("errorMessage");
-        const responseSection = document.getElementById("responseSection");
-        const responseBody = document.getElementById("responseBody");
-
-        textarea.addEventListener("input", () => {
-            charCount.textContent = textarea.value.length;
-        });
-
-        textarea.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-                submitQuestion();
-            }
-        });
-
-        async function submitQuestion() {
-            const question = textarea.value.trim();
-            if (!question) return;
-
-            submitBtn.disabled = true;
-            loading.classList.add("visible");
-            errorMessage.classList.remove("visible");
-            responseSection.classList.remove("visible");
-            responseBody.innerHTML = "";
-
-            try {
-                const res = await fetch("/ask/stream", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ question }),
-                });
-
-                if (!res.ok) {
-                    const err = await res.json();
-                    throw new Error(err.error || "Something went wrong.");
-                }
-
-                loading.classList.remove("visible");
-                responseSection.classList.add("visible");
-
-                const reader = res.body.getReader();
-                const decoder = new TextDecoder();
-                let buffer = "";
-                let fullText = "";
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split("\n");
-                    buffer = lines.pop();
-
-                    for (const line of lines) {
-                        if (line.startsWith("data: ")) {
-                            const data = line.slice(6);
-                            if (data === "[DONE]") break;
-                            if (data.startsWith("[ERROR]")) {
-                                throw new Error(data.slice(8));
-                            }
-                            fullText += data;
-                            responseBody.innerHTML = formatText(fullText);
-                        }
-                    }
-                }
-            } catch (err) {
-                loading.classList.remove("visible");
-                errorMessage.textContent = err.message;
-                errorMessage.classList.add("visible");
-            } finally {
-                submitBtn.disabled = false;
-            }
-        }
-
-        function formatText(text) {
-            return text
-                .split(/\n\n+/)
-                .filter(p => p.trim())
-                .map(p => "<p>" + escapeHtml(p.trim()) + "</p>")
-                .join("");
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement("div");
-            div.textContent = text;
-            return div.innerHTML;
-        }
-    </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
