@@ -1,0 +1,259 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --ink: #1a1a1a;
+  --paper: #faf8f5;
+  --cream: #f0ece4;
+  --accent: #8b2500;
+  --muted: #6b6560;
+  --border: #d4cfc7;
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --font-sans: "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  background-color: var(--paper);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+  border-bottom: 3px double var(--border);
+  margin-bottom: 2rem;
+}
+
+header .overline {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+header h1 {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+
+header .tagline {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Question Form */
+.question-section {
+  margin-bottom: 2rem;
+}
+
+.question-section label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.question-section textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background-color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.question-section textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.question-section textarea::placeholder {
+  color: #b0a99f;
+  font-style: italic;
+}
+
+.submit-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.char-count {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.submit-btn {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.8rem;
+  background-color: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--accent);
+}
+
+.submit-btn:disabled {
+  background-color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* Response */
+.response-section {
+  display: none;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.response-section.visible {
+  display: block;
+}
+
+.response-header {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.response-body {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink);
+}
+
+.response-body p {
+  margin-bottom: 1rem;
+}
+
+.response-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Loading */
+.loading {
+  display: none;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.loading.visible {
+  display: block;
+}
+
+.loading-text {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.loading-dots::after {
+  content: "";
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0%   { content: ""; }
+  25%  { content: "."; }
+  50%  { content: ".."; }
+  75%  { content: "..."; }
+}
+
+/* Error */
+.error-message {
+  display: none;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--accent);
+  background-color: #fdf2f0;
+  border-left: 3px solid var(--accent);
+}
+
+.error-message.visible {
+  display: block;
+}
+
+/* Footer */
+footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer p {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  html {
+    font-size: 16px;
+  }
+
+  header h1 {
+    font-size: 2rem;
+  }
+
+  .container {
+    padding: 1.5rem 1rem 3rem;
+  }
+}
