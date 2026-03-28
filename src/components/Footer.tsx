@@ -15,6 +15,7 @@ export default function Footer() {
               <Link href="/" className="hover:text-gold transition-colors">Home</Link>
               <Link href="/packet" className="hover:text-gold transition-colors">The Packet</Link>
               <Link href="/advisor" className="hover:text-gold transition-colors">Course Advisor</Link>
+              <Link href="/advice" className="hover:text-gold transition-colors">The Second Opinion</Link>
               <Link href="/about" className="hover:text-gold transition-colors">About</Link>
             </div>
           </div>

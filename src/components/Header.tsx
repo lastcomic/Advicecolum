@@ -23,6 +23,7 @@ export default function Header() {
           <Link href="/" className="text-cream/80 hover:text-gold transition-colors">Home</Link>
           <Link href="/packet" className="text-cream/80 hover:text-gold transition-colors">The Packet</Link>
           <Link href="/advisor" className="text-cream/80 hover:text-gold transition-colors">Course Advisor</Link>
+          <Link href="/advice" className="text-cream/80 hover:text-gold transition-colors">The Second Opinion</Link>
           <Link href="/about" className="text-cream/80 hover:text-gold transition-colors">About</Link>
         </nav>
 
@@ -48,6 +49,7 @@ export default function Header() {
           <Link href="/" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">Home</Link>
           <Link href="/packet" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">The Packet</Link>
           <Link href="/advisor" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">Course Advisor</Link>
+          <Link href="/advice" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">The Second Opinion</Link>
           <Link href="/about" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">About</Link>
         </nav>
       )}
