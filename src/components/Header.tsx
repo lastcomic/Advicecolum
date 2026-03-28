@@ -18,16 +18,13 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex gap-8 text-sm uppercase tracking-wider">
           <Link href="/" className="text-cream/80 hover:text-gold transition-colors">Home</Link>
           <Link href="/packet" className="text-cream/80 hover:text-gold transition-colors">The Packet</Link>
           <Link href="/advisor" className="text-cream/80 hover:text-gold transition-colors">Course Advisor</Link>
-          <Link href="/advice" className="text-cream/80 hover:text-gold transition-colors">The Second Opinion</Link>
           <Link href="/about" className="text-cream/80 hover:text-gold transition-colors">About</Link>
         </nav>
 
-        {/* Mobile menu button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden text-cream"
@@ -43,13 +40,11 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile nav */}
       {menuOpen && (
         <nav className="md:hidden bg-navy-dark px-6 pb-4 flex flex-col gap-3 text-sm uppercase tracking-wider">
           <Link href="/" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">Home</Link>
           <Link href="/packet" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">The Packet</Link>
           <Link href="/advisor" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">Course Advisor</Link>
-          <Link href="/advice" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">The Second Opinion</Link>
           <Link href="/about" onClick={() => setMenuOpen(false)} className="text-cream/80 hover:text-gold">About</Link>
         </nav>
       )}

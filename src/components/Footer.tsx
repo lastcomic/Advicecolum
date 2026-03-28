@@ -7,7 +7,8 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-8">
           <div>
             <h3 className="font-heading text-lg text-cream mb-2">OLD AGE UNIVERSITY</h3>
-            <p className="text-sm text-gold">Developing Minds for the Back Nine</p>
+            <p className="text-sm text-gold italic">Veritas &middot; Wisdom &middot; Knowledge</p>
+            <p className="text-xs text-cream/40 mt-1">Est. 2026</p>
           </div>
           <div>
             <h4 className="text-sm uppercase tracking-wider text-cream mb-3">Pages</h4>
@@ -15,7 +16,6 @@ export default function Footer() {
               <Link href="/" className="hover:text-gold transition-colors">Home</Link>
               <Link href="/packet" className="hover:text-gold transition-colors">The Packet</Link>
               <Link href="/advisor" className="hover:text-gold transition-colors">Course Advisor</Link>
-              <Link href="/advice" className="hover:text-gold transition-colors">The Second Opinion</Link>
               <Link href="/about" className="hover:text-gold transition-colors">About</Link>
             </div>
           </div>
@@ -26,7 +26,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-6 border-t border-cream/10 text-center text-xs">
-          &copy; {new Date().getFullYear()} Old Age University. All rights reserved. No refunds on wisdom.
+          &copy; {new Date().getFullYear()} Old Age University. All rights reserved. You didn&rsquo;t apply. You got in anyway.
         </div>
       </div>
     </footer>

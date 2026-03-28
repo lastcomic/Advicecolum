@@ -9,6 +9,8 @@
   --color-gold-dark: #B89A3E;
   --color-cream: #FAF8F2;
   --color-cream-dark: #F0EDE3;
+  --color-parchment: #F5E6B8;
+  --color-parchment-dark: #E8D494;
   --font-heading: Georgia, "Times New Roman", serif;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -21,4 +23,25 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+}
+
+.gold-rule {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+}
+
+.parchment-bg {
+  background-color: var(--color-parchment);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(0,0,0,0.015) 40px,
+      rgba(0,0,0,0.015) 41px
+    );
+}
+
+.seal-glow {
+  filter: drop-shadow(0 0 12px rgba(201, 168, 76, 0.3));
 }
