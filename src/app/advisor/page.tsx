@@ -57,24 +57,23 @@ export default function AdvisorPage() {
   return (
     <>
       {/* Header */}
-      <header style={{background:"var(--navy)",padding:"16px 40px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.3)"}}>
-        <Link href="/" style={{display:"flex",alignItems:"center",gap:14,textDecoration:"none"}}>
-          <div style={{width:42,height:42,border:"2px solid var(--gold)",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--gold)",fontFamily:"'Playfair Display',serif",fontSize:13,fontWeight:700,letterSpacing:1}}>OAU</div>
+      <header className="hdr">
+        <Link href="/" className="hdr-logo">
+          <div className="hdr-seal">OAU</div>
           <div>
-            <span style={{color:"#fff",fontFamily:"'Playfair Display',serif",fontSize:14,fontWeight:700,letterSpacing:2,textTransform:"uppercase",display:"block"}}>Old Age University</span>
-            <span style={{color:"var(--gold)",fontSize:11,letterSpacing:1,fontStyle:"italic",display:"block"}}>Orientation for the Second Half</span>
+            <span className="hdr-name">Old Age University</span>
+            <span className="hdr-tag">Orientation for the Second Half</span>
           </div>
         </Link>
-        <a href={SHOPIFY_URL} style={{background:"var(--gold)",color:"var(--navy)",fontFamily:"'Playfair Display',serif",fontWeight:700,fontSize:13,padding:"10px 22px",letterSpacing:1,textTransform:"uppercase",textDecoration:"none"}}>Send the Packet — $35</a>
+        <a href={SHOPIFY_URL} className="hdr-btn">Send the Packet &rarr;</a>
       </header>
 
       {/* Hero */}
-      <section style={{background:"var(--navy)",padding:"72px 40px 64px",textAlign:"center",position:"relative"}}>
-        <div style={{position:"absolute",inset:0,background:"repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(201,168,76,.03) 40px,rgba(201,168,76,.03) 41px)"}} />
-        <p style={{fontSize:13,letterSpacing:4,textTransform:"uppercase",color:"var(--gold)",marginBottom:20,position:"relative"}}>Old Age University</p>
-        <h1 style={{fontFamily:"'Playfair Display',serif",fontSize:"clamp(28px,5vw,48px)",fontWeight:900,color:"#fff",lineHeight:1.1,marginBottom:20,position:"relative"}}>Meet Your Academic Advisor</h1>
-        <div style={{width:60,height:2,background:"var(--gold)",margin:"0 auto 20px"}} />
-        <p style={{fontFamily:"'IM Fell English',serif",fontSize:"clamp(17px,2.5vw,22px)",color:"rgba(255,255,255,.8)",maxWidth:480,margin:"0 auto",fontStyle:"italic",position:"relative"}}>Tell us what you are dealing with.<br />We will tell you exactly what you are enrolled in.</p>
+      <section className="hero">
+        <p className="hero-kicker">Old Age University</p>
+        <h1>Meet Your<br /><em>Academic Advisor</em></h1>
+        <div className="hero-rule" />
+        <p className="hero-sub">Tell us what you are dealing with.<br />We will tell you exactly what you are enrolled in.</p>
       </section>
 
       {/* Advisor form + results */}
@@ -158,7 +157,7 @@ export default function AdvisorPage() {
                   textDecoration:"none",fontFamily:"'Playfair Display',serif"
                 }}
               >
-                Get the Full Packet — $35
+                Get the Full Packet — $39
               </a>
             </div>
 
@@ -176,11 +175,11 @@ export default function AdvisorPage() {
       </section>
 
       {/* Footer */}
-      <footer style={{background:"var(--navy)",padding:"28px 40px",textAlign:"center",borderTop:"3px solid var(--gold)"}}>
-        <p style={{color:"rgba(255,255,255,.4)",fontSize:13}}>
-          <a href="https://oldageuniversity.com" style={{color:"var(--gold)",textDecoration:"none"}}>oldageuniversity.com</a>
-          {" "}&middot;{" "}@oldageuniversity{" "}&middot;{" "}
-          <a href="https://seconddraftsociety.app" style={{color:"var(--gold)",textDecoration:"none"}}>seconddraftsociety.app</a>
+      <footer>
+        <p>
+          <a href="https://oldageuniversity.com">oldageuniversity.com</a> &nbsp;&middot;&nbsp;
+          @oldageuniversity &nbsp;&middot;&nbsp;
+          <a href="https://seconddraftsociety.app">seconddraftsociety.app</a>
         </p>
       </footer>
     </>
