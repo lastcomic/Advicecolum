@@ -1,31 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SYSTEM_PROMPT = `You are the academic advisor for Old Age University. Voice is deadpan, wry, observational. Short sentences. Never self-helpy. Feels like a friend who's been through this part already.
-
-Existing OAU courses for reference (do NOT recommend these — they already exist in the catalog):
-OAU 101 Why'd I Walk in the Room, OAU 112 The News Isn't New, OAU 124 Loud Restaurants, OAU 133 Things I Would Have Done Differently, OAU 145 The Second Watch, OAU 156 Everyone Else Seems Fine, OAU 167 Intermediate Silence, OAU 178 The Advice Nobody Asked For, OAU 189 Saturday Has a Different Weight, OAU 201 The Long Game, OAU 211 The Thermostat Is Not a Democracy, OAU 223 Your Doctor Is Younger Than Your Car, OAU 234 I Already Told You That, OAU 245 The Buffet Requires a Strategy, OAU 256 That Was a Different Time and I Stand By It.
-
-You must return valid JSON only, no markdown, no code fences. The JSON must have this exact structure:
-{
-  "courses": [
-    { "number": 267, "title": "Course Title Here", "credits": 3, "description": "2-3 sentences. Deadpan. Specific." },
-    { "number": 268, "title": "Course Title Here", "credits": 3, "description": "2-3 sentences. Deadpan. Specific." },
-    { "number": 269, "title": "Course Title Here", "credits": 3, "description": "2-3 sentences. Deadpan. Specific." }
-  ],
-  "orientation": {
-    "title": "Orientation Title",
-    "pages": [
-      { "num": 1, "title": "Page Title", "body": "2-3 paragraphs." },
-      { "num": 2, "title": "Page Title", "body": "2-3 paragraphs." },
-      { "num": 3, "title": "Page Title", "body": "2-3 paragraphs." },
-      { "num": 4, "title": "Page Title", "body": "2-3 paragraphs." },
-      { "num": 5, "title": "Page Title", "body": "2-3 paragraphs. Last page ends with one quiet line that lands." }
-    ]
-  }
-}
-
-Course numbers start at 267. Descriptions are 2-3 sentences, deadpan, specific to the person's situation. Orientation pages are 2-3 paragraphs each. The last page must end with one quiet line that lands.`;
-
 export async function POST(request: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -33,15 +7,47 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { situation, name, email } = body;
+  const { situation } = body;
 
   if (!situation || !situation.trim()) {
     return NextResponse.json({ error: "Please describe your situation." }, { status: 400 });
   }
 
-  if (!name || !email) {
-    return NextResponse.json({ error: "Name and email are required." }, { status: 400 });
+  const existing = `OAU 101 Why'd I Walk in the Room 3cr, OAU 112 The News Isn't New 2cr, OAU 124 Loud Restaurants A Field Study 2cr, OAU 133 Things I Would Have Done Differently 4cr, OAU 145 The Second Watch 2cr, OAU 156 Everyone Else Seems Fine 3cr, OAU 167 Intermediate Silence 1cr, OAU 178 The Advice Nobody Asked For 3cr, OAU 189 Saturday Has a Different Weight 2cr, OAU 201 The Long Game 4cr, OAU 211 The Thermostat Is Not a Democracy 2cr, OAU 223 Your Doctor Is Younger Than Your Car 3cr, OAU 234 I Already Told You That 2cr, OAU 245 The Buffet Requires a Strategy 1cr, OAU 256 That Was a Different Time and I Stand By It 3cr`;
+
+  const prompt = `You are the course advisor for Old Age University. Deadpan university for people entering the second half of life. Voice: wry, observational, short sentences. Never self-help. Feels like a friend who has been through this part already.
+
+Existing courses: ${existing}
+
+Student situation: "${situation}"
+
+Return ONLY a raw JSON object. No markdown. No backticks. No explanation. Just JSON.
+
+Format:
+{
+  "courses": [
+    {"number": "OAU 267", "title": "Course Title", "credits": 3, "description": "2-3 sentences. Deadpan. Specific. Student feels seen."},
+    {"number": "OAU 278", "title": "Course Title", "credits": 2, "description": "2-3 sentences."},
+    {"number": "OAU 289", "title": "Course Title", "credits": 3, "description": "2-3 sentences."}
+  ],
+  "orientation": {
+    "title": "Short wry title specific to their situation",
+    "pages": [
+      {
+        "num": "Page 1",
+        "title": "What You Are Actually In",
+        "body": "2-3 short paragraphs. Name what they are experiencing honestly. Wry. Specific. Short sentences."
+      },
+      {
+        "num": "Page 2",
+        "title": "One Thing To Carry",
+        "body": "2 paragraphs. One honest thing to hold onto. End with a single quiet line that lands."
+      }
+    ]
   }
+}
+
+Rules: Course numbers 267+. Reuse existing courses when they fit. Always exactly 3 courses. Always exactly 2 orientation pages.`;
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -53,14 +59,8 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-20250514",
-        max_tokens: 4096,
-        system: SYSTEM_PROMPT,
-        messages: [
-          {
-            role: "user",
-            content: `Given this situation: ${situation} — recommend exactly 3 OAU courses and write a 5-page orientation. Return JSON only.`,
-          },
-        ],
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }],
       }),
     });
 
@@ -71,23 +71,14 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
-    const text = data.content[0].text;
-
-    // Parse the JSON from the response
-    let result;
-    try {
-      result = JSON.parse(text);
-    } catch {
-      // Try to extract JSON from the response if it has extra text
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        result = JSON.parse(jsonMatch[0]);
-      } else {
-        throw new Error("Could not parse advisor response");
-      }
-    }
-
-    return NextResponse.json(result);
+    const raw = data.content
+      .filter((b: { type: string }) => b.type === "text")
+      .map((b: { text: string }) => b.text)
+      .join("")
+      .replace(/```json|```/g, "")
+      .trim();
+    const parsed = JSON.parse(raw);
+    return NextResponse.json(parsed);
   } catch (error) {
     console.error("Advisor error:", error);
     return NextResponse.json({ error: "Something went wrong. Try again." }, { status: 500 });
