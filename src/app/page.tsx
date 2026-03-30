@@ -204,30 +204,31 @@ export default function Home() {
       {/* THE LODGE */}
       <section className="lodge">
         <div className="lodge-inner">
-          <h2>The Lodge.<br /><em>A free digital sanctuary for the enrolled.</em></h2>
+          <span className="kicker">Included free with every enrollment. Details inside the envelope.</span>
+          <h2>The packet is the map.<br /><em>The Lodge is the destination.</em></h2>
           <div className="lodge-body">
             <div className="lodge-left">
-              <p>Every enrolled student gets free access to <strong>The Lodge</strong> &mdash; a private digital space built for the kind of conversations that don&rsquo;t happen at dinner parties.</p>
-              <p>It&rsquo;s not social media. There&rsquo;s no feed. No likes. No algorithm deciding what you see.</p>
-              <p>It&rsquo;s a place to sit with questions you didn&rsquo;t know you had &mdash; and an <strong>AI Board of Directors</strong> that actually listens.</p>
+              <p>Most gifts end when the envelope is opened. <strong>This one doesn&rsquo;t.</strong></p>
+              <p>Every enrollment includes something extra. We call it <em>The Lodge.</em></p>
+              <p>It&rsquo;s a surprise. We&rsquo;re not going to describe it here.</p>
+              <p>All we&rsquo;ll say is this &mdash; the physical packet sits on their desk. The Lodge is where they go when they need to think.</p>
               <div className="lodge-mystery">
-                <p>&ldquo;Think of it as the faculty lounge you were never invited to &mdash; until now.&rdquo;</p>
-                <span className="mystery-note">Access included with every enrollment</span>
+                <p>&ldquo;The details are inside the envelope.&rdquo;</p>
+                <span className="mystery-note">Open it last.</span>
               </div>
             </div>
             <div className="lodge-right">
-              <span className="badge">Inside The Lodge</span>
-              <h3>Your AI Board of Directors</h3>
+              <span className="badge">Free With Every Packet</span>
+              <h3>What The Lodge Contains</h3>
               <ul>
-                <li>A personal advisory board that knows your context</li>
-                <li>Career, relationships, health, purpose &mdash; all of it</li>
-                <li>No judgment. No small talk. Just honest counsel.</li>
-                <li>Available 24/7 because existential questions don&rsquo;t keep business hours</li>
-                <li>Built on the same philosophy as OAU: funny first, then true</li>
+                <li>A private space that comes with every enrollment</li>
+                <li>Details are inside the envelope &mdash; not on this page</li>
+                <li>The physical packet is the beginning. The Lodge is what comes after.</li>
+                <li>Members find out when they open it.</li>
               </ul>
               <div className="lodge-free">
                 <span className="free">FREE</span>
-                <span className="free-label">Included with every Welcome Packet</span>
+                <span className="free-label">Included with every packet &middot; Details inside</span>
               </div>
             </div>
           </div>
